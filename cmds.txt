@@ -1,6 +1,10 @@
 #nextjs
 
 * it is used to make full stack applications
+all the components which we export default run on backend side and not on frontend which is different then react.
+due to this less js code for client side.
+only the html return is send to client side thus great for SEO. thus we can inspact the page and will be able to see the html code
+thus we need to use 'use client' so that the log you added in the export function is avaible in the client size.
 
 * page.tsx ,layout.tsx, not-found.tsx, error.tsx, loading.tsx, route.tsx are reservered file names.
 page.tsx acts are index file for the folder to provide entry point for the route.
@@ -11,6 +15,8 @@ loading.tsx Fallback page which is shown whilst sibling or nested pages (or layo
 route.tsx Allows you to create an API route (i.e., a page which does NOT return JSX code but instead data, e.g., in the JSON format)
 
 * next/link , next/image
+<Link href="wfwfwfwf" /> doesn't make a request to server
+<Image src="wefwnfwonh" width={} height={}> lazy loads the image, also adds srcset to pick the best image,fill can be used instead of width and height for auto space taking
 
 * import type { Metadata } from "next"
 export const metadata: Metadata = {
@@ -30,6 +36,31 @@ just make a file and export function init.
 then import where you want as a tag.
 
 * we can use @ to refer to root folder. this is done by default in tsconfig.json file
+
+* [slug] (folder) to create a vaible name folder used to passing id's. if we have a [folder] and a folder with same name entered by client then that folder will take the presidance 
+
+* export default function anything({param,children}){}
+param for getting the [id] enter by client
+getting the contents for child folder(child routes or pages)
+
+* styling
+by default nextjs uses tailwind
+a css file can be imported by 'import "./globals.css";' any where and will be available everywhere
+'import sty from anyname.module.css' now will be used by className={sty.classname} this is add a random generated name so that it's unique and applies only once
+
+* next/navigation
+import {usePathname} from 'next/navigation'; to give name current path 
+
+import { Suspense } from "react";
+Suspense is used for components what might need some time,
+<Suspense fallback={<p>Fetching products...</p>}>   //fallback will be shown untill latestproducts tag is compelete executing
+<LatestProducts />    //contains fetch request
+</Suspense>
+
+# sql db
+npm install better-sqlite3 (this don't need any sql server).
+node filename.js (will where db is defined, this will generate the db);
+
 
 #github
 
