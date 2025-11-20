@@ -9,7 +9,7 @@ thus we need to use 'use client' so that the log you added in the export functio
 * page.tsx ,layout.tsx, not-found.tsx, error.tsx, loading.tsx, route.tsx are reservered file names.
 page.tsx acts are index file for the folder to provide entry point for the route.
 layout.tsx file follows the hirerchay we can have nexted layouts and an layout file has a scope of parent folder.
-not-found.tsx Fallback page for "Not Found" errors (thrown by sibling or nested pages or layouts)
+not-found.tsx Fallback page for "Not Found" errors (thrown by sibling or nested pages or layouts). notFound() method can be used to trigger not found page anywhere in the code.
 error.tsx  Fallback page for other errors (thrown by sibling pages or nested pages or layouts)
 loading.tsx Fallback page which is shown whilst sibling or nested pages (or layouts) are fetching data
 route.tsx Allows you to create an API route (i.e., a page which does NOT return JSX code but instead data, e.g., in the JSON format)
@@ -25,11 +25,34 @@ export const metadata: Metadata = {
 };
 <head></head>
 export const metadata (reserved keyword)
+If there parent folder has been given metadata the children folders or routes will have the same meta data unless you mention it in the childer routes(folder).
+{adding meta data to dynamic routes [slug]. 
+  [slug]/page.tsx
+  export async function generatedMetadata({ params }){
+    return {
+      title:"...",
+    }
+  }
+}
+
+* import { useFormStatus, useFormState } from 'react-dom';
+const {pending} = useFormStatus(); pending with will true if there is an ongoing form submit event.
+useFormState() has been changed to useActionState() now. useFormState()
 
 * app/icon.png will automatically be applied as page icon
 
 * routing
 folder structure represents routing, routeName/page.tsx the starting point for the route
+parall routing, including two or more routes in a single route. parallel routes folder are represented by @foldername
+app/**/route.js file is use to handle all the http requests
+{
+  /middleware.js
+  
+  import {NextResponse} from 'next/server';
+  export function middleware(request){
+    return NextResponse.next();//.redirect("...")
+  }
+}
 
 * component
 just make a file and export function init.
@@ -51,17 +74,45 @@ a css file can be imported by 'import "./globals.css";' any where and will be av
 * next/navigation
 import {usePathname} from 'next/navigation'; to give name current path 
 
-import { Suspense } from "react";
-Suspense is used for components what might need some time,
+import { Suspense, useActionState} from "react";
+{Suspense is used for components what might need some time,
 <Suspense fallback={<p>Fetching products...</p>}>   //fallback will be shown untill latestproducts tag is compelete executing
 <LatestProducts />    //contains fetch request
-</Suspense>
+</Suspense>}
+
+
+
+
+* security
+"npm i xss" taking inputs directly from user is dangerous thus xss filters the inputs
 
 # sql db
 npm install better-sqlite3 (this don't need any sql server).
+npm i -D @types/better-sqlite3 (to make is compatible with typescript)
 node filename.js (will where db is defined, this will generate the db);
 
+* cacheing
+nextjs in production mode(npm run build) caches the whole page due to which in production it doesn't make request to server.
+revalidatePath('/anyRoute','page') this makes request to the server to avoid cacheing in production mod, revalidatePath('/anyRoute','layout') this makes the whole whole layout not cache making everything that depends on that component not getting cached
+Request Memoization caching : same request with same configuration are cache to reduce same request.
+data caching : data is cache untill modification
+full route cache : full html cache
+router cache
 
 #github
 
 git remote add origin git@github.com-second:rajnishad24082003/nextjs-course.git
+
+
+# changing opacity in ubuntu
+
+["Visual Studio Code","Google Chrome"]
+
+name="Visual Studio Code"
+opacityPercent=100
+bash -c "for W in \$(wmctrl -l | grep \"$name\" | awk '{print \$1}'); do
+  xprop -id \$W -format _NET_WM_WINDOW_OPACITY 32c \
+    -set _NET_WM_WINDOW_OPACITY \$(printf 0x%x \$((0xffffffff * $opacityPercent / 100)))
+done"
+
+
